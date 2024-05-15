@@ -3,8 +3,14 @@ import mongoose from "mongoose";
 export interface ExpenseModelTypes {
   user: mongoose.Schema.Types.ObjectId;
   date: Date;
-  type: string;
-  money: string;
+  category: "income" | "expense";
+  amount: string;
   reason: string;
-  evidence: string;
+}
+
+export interface NewExpenseType {
+  date: Date;
+  category: "income" | "expense";
+  amount: string;
+  reason: string;
 }

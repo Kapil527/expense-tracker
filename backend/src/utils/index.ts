@@ -16,7 +16,7 @@ export const generateToken = (data: {}) => {
   return jwt.sign(data, JWT_SECRET as string);
 };
 
-export const verifyPassword = async (oldPass: string, enteredPass: string) => {
-  const verify = await bcrypt.compare(oldPass, enteredPass);
+export const verifyPassword = async (enteredPass: string, oldPass: string) => {
+  const verify = await bcrypt.compare(enteredPass, oldPass);
   return verify;
 };

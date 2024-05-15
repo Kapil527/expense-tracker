@@ -3,7 +3,7 @@ import { ControllerType } from "types/controllerType";
 
 const asyncErrorHandler = (func: ControllerType) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(func(req, res, next)).catch(next);
+    return Promise.resolve(func(req, res, next)).catch(next);
   };
 };
 

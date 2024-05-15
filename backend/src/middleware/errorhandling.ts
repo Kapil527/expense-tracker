@@ -5,7 +5,7 @@ interface Error {
   statusCode: number;
   stack: any;
 }
-export function Errorhandling(
+export function errorhandling(
   error: Error,
   req: Request,
   res: Response,
@@ -15,5 +15,7 @@ export function Errorhandling(
   const statusCode = error.statusCode || 500;
   const stack = error.stack;
 
-  return res.status(statusCode).json({ success: false, message, stack });
+  return res
+    .status(statusCode)
+    .json({ success: false, message: message, stack });
 }

@@ -5,11 +5,10 @@ import { ExpenseModelTypes } from "types/expense";
 const expenseSchema = new Schema<ExpenseModelTypes>(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-    type: { type: String, require: true },
+    category: { type: String, require: true, enum: ["income", "expense"] },
     date: { type: Date, require: true },
-    money: { type: String, require: true },
+    amount: { type: String, require: true },
     reason: { type: String, require: true },
-    evidence: { type: String },
   },
   { timestamps: true }
 );

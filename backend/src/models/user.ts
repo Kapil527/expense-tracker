@@ -6,7 +6,7 @@ const userSchema = new Schema<UserModelTypes>(
   {
     username: { type: String, require: true, minlength: 4, maxlength: 20 },
     email: { type: String, require: true, unique: true },
-    password: { type: String, require: true, minlength: 8, maxlength: 30 },
+    password: { type: String, require: true, minlength: 8, maxlength: 300 },
     userImage: { type: String },
   },
   { timestamps: true }
