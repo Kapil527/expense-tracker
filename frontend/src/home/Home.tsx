@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import { Model } from "./components/Model";
 import { Table } from "./components/Tabel";
@@ -13,9 +12,6 @@ const Home = () => {
   const [toggleModel, setToggleModel] = useState(false);
   const [buttonId, setButtonId] = useState("");
   const [expenses, setExpenses] = useState<ExpenseType>({} as ExpenseType);
-  const [updateExpense, setUpdateExpense] = useState<ExpenseType>(
-    {} as ExpenseType
-  );
 
   const handleOnChange = (
     event:
@@ -38,10 +34,6 @@ const Home = () => {
     }
   };
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!localStorage.getItem("authtoken")) navigate("/login");
-  }, []);
   return (
     <div className="h-full w-full flex flex-col items-center justify-center">
       {/* <!-- Modal toggle --> */}
@@ -49,7 +41,7 @@ const Home = () => {
         data-modal-target="crud-modal"
         data-modal-toggle="crud-modal"
         id="addExpense"
-        className="block ms-auto me-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="block ms-auto me-4 mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"
         onClick={handleOnClick}
       >
@@ -57,7 +49,7 @@ const Home = () => {
       </button>
 
       <Model
-        expenses={buttonId === "edit" ? updateExpense : expenses}
+        expenses={expenses}
         toggle={toggleModel}
         id={buttonId}
         handleToggle={handleToggle}
@@ -79,11 +71,9 @@ const Home = () => {
           <img src={GraphIcon} alt="graphIcon" width="30px" />
         </button>
       </div>
+
       {toggleComponents === false ? (
-        <Table
-          handleOnClick={handleOnClick}
-          setEditExpense={setUpdateExpense}
-        />
+        <Table handleOnClick={handleOnClick} setEditExpense={setExpenses} />
       ) : (
         ""
       )}

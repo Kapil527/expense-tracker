@@ -14,6 +14,7 @@ export const getUserdetails = asyncErrorHandler(
       "-createdAt",
       "-__v",
     ]);
+    console.log(user)
     return res.status(200).json({ success: true, user });
   }
 );

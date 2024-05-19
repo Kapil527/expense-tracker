@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../context/AuthContext";
+import { AuthContextType } from "../types/authContextType";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const { login, authtoken, success } = useAuthContext();
+  const { login, authtoken, success } = useAuthContext() as AuthContextType;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({
@@ -22,7 +23,7 @@ const Login = () => {
   useEffect(() => {
     if (success === true) {
       navigate("/");
-      localStorage.setItem("authtoken", authtoken);
+      localStorage.setItem("authtoken", authtoken as string);
     }
   }, [success]);
 

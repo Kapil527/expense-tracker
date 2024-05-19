@@ -21,6 +21,7 @@ export const Table = ({ setEditExpense, handleOnClick }: PropsType) => {
   useEffect(() => {
     getExpenses();
   }, []);
+  
   return (
     <>
       <div className=" h-4/5 m-4">
