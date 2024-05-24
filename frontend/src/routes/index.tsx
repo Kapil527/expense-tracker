@@ -6,19 +6,34 @@ import Home from "../home/Home";
 import Settings from "../settings/Settings";
 import Login from "../auth/Login";
 import Signup from "../auth/Signup";
+import Navbar from "../components/Navbar";
+import SideBar from "../components/Sidebar";
 import { PageNotFound } from "../components/PageNotFound";
+import DashBoard from "../dashboard";
 
 const Routes = () => {
   const { authtoken } = useAuthContext();
 
-  //defining routes for only authentication users.
+  //defining routes for only authenticated users.
   const routesForAuthenticatedOnly = {
     path: "/",
-    element: <AuthWrapper />,
+    element: (
+      <>
+        <div className="flex">
+          <SideBar />
+          <Navbar />
+        </div>
+        <AuthWrapper />
+      </>
+    ),
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/dashboard",
+        element: <DashBoard />,
       },
       {
         path: "/settings",
@@ -27,7 +42,7 @@ const Routes = () => {
     ],
   };
 
-  //definign routes for only non authenticated user.
+  //defining routes for only non authenticated user.
   const routesForNotAuthenticatedOnly = [
     {
       path: "/login",

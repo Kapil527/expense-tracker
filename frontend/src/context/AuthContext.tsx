@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -15,16 +15,6 @@ export const AuthState = ({ children }: { children: React.ReactNode }) => {
   const [message, setMessage] = useState("");
   const [user, setUser] = useState<UserType>({} as UserType);
 
-  useEffect(() => {
-    if (authtoken) {
-      axios.defaults.headers.common["Authorization"] = authtoken;
-      localStorage.setItem("authtoken", authtoken);
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-      localStorage.removeItem("authtoken");
-    }
-  }, [authtoken]);
-
   const sendOTP = async (email: string) => {
     const response = await axios.post(
       "http://localhost:5000/api/v1/auth/send-otp",
@@ -39,33 +29,41 @@ export const AuthState = ({ children }: { children: React.ReactNode }) => {
   };
 
   const login = async (email: string, password: string) => {
-    setAuthtoken("");
-    setSuccess(false);
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/auth/login",
-      {
-        email,
-        password,
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+      const { data } = response;
+      if (data.success === true) {
+        setAuthtoken(data.authtoken);
+      } else {
+        toast.error(data.message);
       }
-    );
-    const { data } = response;
-    if (data.success === true) {
-      setAuthtoken(data.authtoken);
-    } else {
-      toast.error(data.message);
+      setSuccess(data.success);
+    } catch (error) {
+      console.log(error);
     }
-    setSuccess(data.success);
   };
 
   async function getUser() {
-    const response = await axios.get(authAPIS.getUser);
+    try {
+      const response = await axios.get(authAPIS.getUser, {
+        headers: { Authorization: authtoken },
+      });
 
-    const { data } = response;
-    if (data.success) {
-      setUser(data.user);
+      const { data } = response;
+      if (data.success) {
+        setUser(data.user);
+      }
+      setSuccess(data.success);
+      setMessage(data.message);
+    } catch (error) {
+      console.log(error);
     }
-    setSuccess(data.success);
-    setMessage(data.message);
   }
 
   return (

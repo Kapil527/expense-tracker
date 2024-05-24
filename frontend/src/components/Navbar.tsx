@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuthContext } from "../context/AuthContext.tsx";
@@ -6,20 +6,27 @@ import { AuthContextType } from "../types/authContextType.ts";
 
 const Navbar = () => {
   const [toggle, setToggle] = useState<boolean>(false);
-  const { user, getUser } = useAuthContext() as AuthContextType;
-
-  const token = localStorage.getItem("authtoken");
+  const { authtoken, user, getUser } = useAuthContext() as AuthContextType;
+  const ref = useRef<any>(null);
 
   useEffect(() => {
-    if (token) {
+    if (authtoken) {
       getUser();
     }
   }, []);
 
+  const closeDropDown = (event: MouseEvent) => {
+    if (toggle && !ref.current.contains(event.target)) {
+      setToggle(false);
+    }
+  };
+
+  document.addEventListener("mousedown", closeDropDown);
+
   return (
     <>
-      {token && (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900 shadow w-screen">
+      {authtoken && (
+        <nav className="hidden md:block bg-white border-gray-200 dark:bg-gray-900 shadow w-screen">
           <div className="w-full flex flex-wrap items-center mx-auto p-4">
             <Link
               to="/"
@@ -52,6 +59,7 @@ const Navbar = () => {
                   toggle === false ? "hidden" : ""
                 } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 fixed top-9 right-4`}
                 id="user-dropdown"
+                ref={ref}
               >
                 <div className="px-4 py-3">
                   <span className="block text-sm text-gray-900 dark:text-white">
@@ -62,7 +70,7 @@ const Navbar = () => {
                   </span>
                 </div>
                 <ul className="py-2" aria-labelledby="user-menu-button">
-                  <li>
+                  <li onClick={() => setToggle((prev) => !prev)}>
                     <Link
                       to="/settings"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
@@ -70,7 +78,7 @@ const Navbar = () => {
                       Settings
                     </Link>
                   </li>
-                  <li>
+                  <li onClick={() => setToggle((prev) => !prev)}>
                     <Link
                       to="/login"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"

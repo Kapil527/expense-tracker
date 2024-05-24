@@ -11,7 +11,6 @@ export const fetchUser = asyncErrorHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.headers["authorization"] as string;
     const token = userId?.split("Bearer ")[0];
-
     if (!token) {
       return next(new ErrorHandler("Invalid Token", 400));
     }

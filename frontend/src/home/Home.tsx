@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Model } from "./components/Model";
 import { Table } from "./components/Tabel";
 import GraphIcon from "/graph.svg";
 import TabelIcon from "/table.svg";
 import { ExpenseType } from "../types/expense";
-// import { Card } from "./components/Card";
+import MobileView from "./components/MobileView";
+import { Button } from "./components/Button";
 
 const Home = () => {
-  const [toggleComponents, setToggleComponents] = useState(false);
   const [toggleModel, setToggleModel] = useState(false);
   const [buttonId, setButtonId] = useState("");
   const [expenses, setExpenses] = useState<ExpenseType>({} as ExpenseType);
+  const navigate = useNavigate();
 
   const handleOnChange = (
     event:
@@ -21,32 +23,25 @@ const Home = () => {
     setExpenses({ ...expenses, [event.target.name]: event.target.value });
   };
 
+  // This function is used to toggle model
   const handleToggle = (value: boolean) => {
     setToggleModel(value);
   };
 
+  // This function get's the id the div element which determines weather expenses should be added or edited.
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const id = event.currentTarget.id;
     handleToggle(true);
     setButtonId(id);
-    if (id === "edit") {
-    }
   };
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center">
       {/* <!-- Modal toggle --> */}
-      <button
-        data-modal-target="crud-modal"
-        data-modal-toggle="crud-modal"
-        id="addExpense"
-        className="block ms-auto me-4 mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button"
-        onClick={handleOnClick}
-      >
-        Add expense
-      </button>
+      <div className="hidden md:block">
+      <Button handleOnClick={handleOnClick}/>
+      </div>
 
       <Model
         expenses={expenses}
@@ -56,29 +51,20 @@ const Home = () => {
         handleOnChange={handleOnChange}
       />
 
-      {/* This component is used to toggle the table component and graph component */}
-      <div className="toggleComponents flex">
-        <button
-          className="mx-2 cursor-pointer"
-          onClick={() => setToggleComponents(false)}
-        >
+      {/* This component is used to toggle the table component and dashboard component */}
+      <div className="toggleComponents hidden md:flex">
+        <button className="mx-2 cursor-pointer" onClick={() => navigate("/")}>
           <img src={TabelIcon} alt="tableIcon" width="30px" />
         </button>
         <button
           className="mx-2 cursor-pointer"
-          onClick={() => setToggleComponents(true)}
+          onClick={() => navigate("/dashboard")}
         >
           <img src={GraphIcon} alt="graphIcon" width="30px" />
         </button>
       </div>
 
-      {toggleComponents === false ? (
-        <Table handleOnClick={handleOnClick} setEditExpense={setExpenses} />
-      ) : (
-        ""
-      )}
-
-      {/* <Card /> */}
+      <MobileView handleOnClick={handleOnClick}/>
     </div>
   );
 };

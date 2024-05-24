@@ -1,29 +1,35 @@
 export const Card = () => {
   return (
-    <div className="md:hidden w-full">
-      <div className="card m-[12px] p-4 shadow-lg flex justify-between items-center rounded-xl">
-        <div className="content">
+    <div className="w-full h-[calc(100dvh-50px)] flex flex-col items-center justify-center">
+      <div className="card w-full bg-gray-50 shadow-sm rounded p-3">
+        <div className={`date ${divStyle}`}>
           <p>
-            <span className="font-bold">Date:-</span> 07/05/2024
-          </p>
-          <p>
-            <span className="font-bold">Category:-</span> Expense
-          </p>
-          <p>
-            <span className="font-bold">Amount:-</span> 5000
-          </p>
-          <p>
-            <span className="font-bold">Reason:-</span> Shopping
-          </p>
-          <p>
-            <span className="font-bold">Evidence:-</span> --
+            <span className={spanStyle}>Date :- </span> 17/05/2016
           </p>
         </div>
-        <div className="buttons flex items-center">
-          <button className="mx-2">Edit</button>
-          <button>Delete</button>
+        <div className={`category ${divStyle}`}>
+          <p>
+            <span className={spanStyle}>Category :- </span> Income
+          </p>
+        </div>
+        <div className={`amount ${divStyle}`}>
+          <p>
+            <span className={spanStyle}>Amount :- </span> 200000
+          </p>
+        </div>
+        <div className={`reason ${divStyle}`}>
+          <p>
+            <span className={spanStyle}>Reason :- </span> Shoping
+          </p>
+        </div>
+        <div className="buttons">
+          <button className="edit block bg-blue-600 text-white rounded shadow-sm w-[150px] p-2 mx-2 font-semibold my-2">Edit</button>
+          <button className="delete block bg-red-600 text-white rounded shadow-sm w-[150px] p-2 mx-2 font-semibold my-2">Delete</button>
         </div>
       </div>
     </div>
   );
 };
+
+const spanStyle = "text-lg font-semibold";
+const divStyle = "m-1 p-2";

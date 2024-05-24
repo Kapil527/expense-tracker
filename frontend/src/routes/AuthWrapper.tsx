@@ -9,7 +9,7 @@ export const AuthWrapper = () => {
   //Check if user is authenticated
   if (!authtoken) {
     // if not then rediredt the user to login page.
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace/>;
   }
 
   // if authenticated render the child route.
